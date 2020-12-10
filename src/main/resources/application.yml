@@ -1,0 +1,12 @@
+msg:
+   greeting: Say Yoo!
+   welcome: Welcome to the DEV program, ${msg.greeting} to ${USER}
+   some:
+      messages: "one,two"
+      options: "{1:'one',
+                 2:'two',
+                 3:'three'
+                 }"
+
+spring.output.ansi.enabled: ALWAYS
+spring.devtools.restart.enabled: false
