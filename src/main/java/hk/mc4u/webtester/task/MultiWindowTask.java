@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 public class MultiWindowTask {
 
 
-	public void test01() throws InterruptedException {
+	public void run() throws InterruptedException {
 		WebDriver driver = new FirefoxDriver();
 
 		// Launching the site.

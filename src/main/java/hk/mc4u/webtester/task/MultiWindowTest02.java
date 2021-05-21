@@ -8,7 +8,7 @@ import org.openqa.selenium.By;
 public class MultiWindowTest02 extends BaseTask {
 	
 
-	public void test01() throws InterruptedException {
+	public void run() throws InterruptedException {
 //		driver = new FirefoxDriver();
 
 		// Launching the site.

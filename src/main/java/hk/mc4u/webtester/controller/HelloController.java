@@ -21,7 +21,7 @@ public class HelloController {
 	public ResponseEntity<?> sayHello() {
 		log.info("Hello");
 		try {
-			task.test01();
+			task.run();
 		} catch (InterruptedException e) {
 			log.error(e.getMessage());
 		}
