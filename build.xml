@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="simple-proj-skeleton" default="help" basedir=".">
+
+	<property environment="env"/>
+	<property name="target" value="target"/>
+	<property name="dist" value="dist"/>
+	<property name="simple-name" value="${ant.project.name}" />
+	<property name="dist-file" value="${simple-name}.jar"/>
+	<property name="tar-file" value="${simple-name}.tar"/>
+	<property name="main-class" value="${simple-name}.App"/>
+	
+	<target name="help" description="help">
+		<echo>
+sub-project build.xml
+help      -- help
+clean     -- clean sub-project files
+build     -- create target path and compile all java files.
+jar       -- package all classes into a jar file.
+dist      -- forming a distributable structure in dist/ folder.
+tar       -- create a tar file from the dist/ folder.
+			
+copy-mvn-lib -- copy mvn managed jars to lib/ 		
+		</echo>
+	</target>
+	
+	<path id="class.path">
+		<fileset dir="lib">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
+
+	<target name="clean" description="clean sub-project files">
+		<delete dir="${target}" />
+		<delete dir="${dist}" />
+		<delete file="${tar-file}" />
+	</target>
+
+	<target name="clean-lib" description="clean sub-project files">
+		<delete dir="lib" />
+		<mkdir dir="lib" />
+	</target>
+	
+	<target name="build"  depends="clean" description="create target path and compile all java files.">
+		<mkdir dir="${target}/classes" />
+		<javac includeantruntime="false" 
+			srcdir="src/main/java" 
+			destdir="${target}/classes" >
+			<classpath refid="class.path"/>
+		</javac>
+		<copy todir="${target}/classes">
+		  <fileset dir="src/main/resources">
+		    <include name="**"/>
+		  </fileset>
+		</copy>		
+	</target>
+
+	<pathconvert property="manifest.classpath" pathsep=" ">
+	  <path refid="class.path"/>
+	  <mapper>
+	    <chainedmapper>
+	       <flattenmapper/>
+	       <globmapper from="*.jar" to="lib/*.jar"/>
+	    </chainedmapper>
+	  </mapper>
+	</pathconvert>
+
+	<target name="jar" depends="build" description="package all classes into a jar file.">
+		<mkdir dir="${target}" />
+
+		<!-- convert - to . -->
+		<loadresource property="main.class">
+		  <propertyresource name="main-class"/>
+		  <filterchain>
+		    <tokenfilter>
+		      <filetokenizer/>
+		      <replacestring from="-" to="."/>
+		    </tokenfilter>
+		  </filterchain>
+		</loadresource>
+
+		<jar destfile="${target}/${dist-file}" 
+			basedir="${target}/classes">
+			<manifest>
+				<attribute name="Main-Class" value="${main.class}" />
+				<attribute name="Class-Path" value="${manifest.classpath}"/>				
+			</manifest>
+		</jar>
+	</target>
+	
+	<target name="dist" depends="jar" description="forming a distributable structure in dist/ folder.">
+		<mkdir dir="${dist}" />
+		<echo file="${dist}/start-${simple-name}.sh" append="false">
+#!/bin/bash
+full_path=$(realpath $0)
+dir_path=$(dirname $full_path)
+java -jar $dir_path/${simple-name}/${dist-file}
+		</echo>		
+		<copy file="${target}/${dist-file}" todir="${dist}/${simple-name}"/>
+		<copy todir="${dist}/${simple-name}/lib" flatten="true">
+			<fileset dir="lib">    
+				<include name="*.jar" />    
+			</fileset>  
+		</copy>
+	</target>
+
+	<target name="tar" depends="dist" description="create a tar file from the dist/ folder.">
+		<tar destfile="${tar-file}" basedir="${dist}"/>
+	</target>
+	
+	<target name="copy-mvn-lib">
+		<exec executable="mvn">
+			<arg value="install" />
+			<arg value="dependency:copy-dependencies" />
+		</exec>
+
+		<copy todir="lib">
+			<fileset dir="target/dependency" />
+		</copy>
+	</target>	
+</project>
