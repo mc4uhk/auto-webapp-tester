@@ -15,7 +15,7 @@ public class Test02 {
 		String[][] data = {
 				{"A","a"},	
 				{"A","b"},	
-				{"A","c"},	
+				{"A","c", "1"},	
 				{"A","d"},	
 				{"A","e"},	
 		};
@@ -25,9 +25,11 @@ public class Test02 {
 		list.forEach(this::process);
 	}
 	
-	public void process(String ... params) {
+	public void process(String... params) {
 		log.info("Length: {}", params.length);
-		log.info("{} {}", params[0],params[1]);
+		for(String param : params) {
+			log.info("{}", param);
+		}
 	}
 
 }
