@@ -28,6 +28,7 @@ public class Test03 {
 				{"A","e"},	
 		};
 		
+		
 		List<Object[]> list = Arrays.asList(data);
 		
 		list.forEach(this::process);
