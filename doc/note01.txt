@@ -1,0 +1,13 @@
+Spring Bean
+ArmsEmailRepo
+ArmsEmailManager
+ArmsEmailService
+
+class SendEmailProcess
+@Autowired ArmsEmailManager
+run(){
+	Emails emails = ArmsEmailManager.getEmails();
+	
+	ArmsEmailService es = Factory.get("ARMS");
+	es.send(emails);
+}
