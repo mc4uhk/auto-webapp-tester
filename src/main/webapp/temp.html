@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+    <title>Document</title>
+  </head>
+  <body>
+    Hi
+    <div id="a001" style="display: none">Yoo</div>
+    <div id="a002" style="display: none">Hey</div>
+    <script>
+      var str = "[a002,a003]";
+
+      try {
+        var targetIds = getContent(str);
+        console.log("hi: " + targetIds);
+        var targets = targetIds.split(",");
+
+        targets.forEach(function (target) {
+          $("#" + target).show();
+        });
+      } catch (error) {
+        console.error(error);
+      }
+
+      function getContent(str) {
+        var result = str.substring(
+          str.lastIndexOf("[") + 1,
+          str.lastIndexOf("]")
+        );
+        return result;
+      }
+    </script>
+  </body>
+</html>

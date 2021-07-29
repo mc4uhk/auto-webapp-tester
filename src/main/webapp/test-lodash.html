@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script
+      src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"
+      integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"
+      crossorigin="anonymous"
+    ></script>
+
+    <link rel="stylesheet" href="learn-jquery.css" />
+
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.css"
+    />
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid-theme.min.css"
+    />
+
+    <script
+      type="text/javascript"
+      src="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.js"
+    ></script>
+    <meta charset="UTF-8" />
+    <title>CSS Position</title>
+  </head>
+  <body>
+    <div id="test"></div>
+    <div id="test.01"></div>
+    <div id="test.abc-0-firstName">dsadsada</div>
+  </body>
+
+  <script>
+    var data = {
+      a: "A",
+      b: "B",
+      c: [
+        { a: "AA1", b: "BB1" },
+        { a: "AA2", b: "BB2" },
+      ],
+      test: { abc: [{ firstName: "NameA" }, { firstName: "NameB" }] },
+      d: {
+        a: "A1",
+        b: "B1",
+        c: [
+          {
+            a: "AA1",
+            b: "BB1",
+            c: [
+              {
+                a: "A",
+                b: "B",
+                c: [
+                  { a: "AA1", b: "BB1" },
+                  { a: "AA2", b: "BB2" },
+                ],
+              },
+              { a: "A", b: "B" },
+            ],
+          },
+          { a: "AA2", b: "BB2" },
+        ],
+      },
+    };
+
+    var key01 = "test.abc-0-firstName";
+    console.log([key01, dash2dot(key01)]);
+    let result = _.get(data, dash2dot(key01));
+    console.log(result);
+    _.set(data, dash2dot(key01), "AAAA");
+    console.log(["result", _.get(data, dash2dot(key01))]);
+
+    console.log(escDot(key01));
+    $(escDot("#" + key01)).html(_.get(data, dash2dot(key01)));
+
+    $("#test").html("Hi");
+    var key = "test.01";
+    $(escDot("#" + key)).html("01");
+
+    var key = "test.01-0-firstName";
+    $(escDot("#" + key)).html("firstName");
+
+    function escDot(key) {
+      return key.replaceAll(".", "\\.");
+    }
+
+    function dash2dot(key) {
+      return key.replaceAll("-", ".");
+    }
+  </script>
+</html>
