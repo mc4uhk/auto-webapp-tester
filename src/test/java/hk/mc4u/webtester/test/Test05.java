@@ -17,7 +17,7 @@ public class Test05 {
 
 		ValidationProcess epProcess = new ValidationProcess(new ExemptionStrategy());
 		epProcess.doValidation();
-
+		
 	}
 
 }
